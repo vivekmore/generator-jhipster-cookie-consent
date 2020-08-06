@@ -14,7 +14,7 @@ This generator adds a fully functional [cookie consent popup](docs/features/COOK
 
 
 # Installing JHipster
-To install this JHipster globally:
+To install JHipster globally:
 ```bash
 npm install -g generator-jhipster
 ```
