@@ -1,0 +1,15 @@
+os:
+  - linux
+language: node_js
+node_js:
+  - '12.15.0'
+cache:
+  directories:
+    - "$HOME/.npm"
+before_install:
+    # Update NPM
+    - npm install -g npm
+install:
+  - npm ci
+  - npm link
+  - npm run coveralls
