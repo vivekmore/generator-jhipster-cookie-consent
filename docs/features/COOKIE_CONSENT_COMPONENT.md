@@ -1,5 +1,7 @@
 # A Cookie Consent Popup
 
+![img.png](img.png)
+
 This template creates a cookie consent popup using `ngx-cookieconsent` module
 The following (client-side) artifacts are modified:
 

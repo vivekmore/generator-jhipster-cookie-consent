@@ -1,4 +1,4 @@
-# Add a Cookie Consent to your JHipster app !!!
+# Add a Cookie Consent popup to your JHipster app !!!
 [![NPM version][npm-image]][npm-url] 
 [![Dependency Status][daviddm-image]][daviddm-url] 
 [![Build Status][travis-image]][travis-url] 
@@ -11,7 +11,7 @@
 # Introduction
 
 This generator adds a fully functional [cookie consent popup](docs/features/COOKIE_CONSENT_COMPONENT.md) to your [JHipster](http://jhipster.github.io/) application.
-
+![img.png](docs/features/img.png)
 
 # Installing JHipster
 To install JHipster globally:
@@ -23,18 +23,10 @@ npm install -g generator-jhipster
 
 # Installing the generator-jhipster-cookie-consent module
 
-#### with NPM
-
-To install this module globally:
+To install this module globally (via npm or yarn):
 ```bash
 npm install -g generator-jhipster-cookie-consent
-```
 
-
-#### with Yarn
-
-To install this module globally:
-```bash
 yarn global add generator-jhipster-cookie-consent
 ```
 

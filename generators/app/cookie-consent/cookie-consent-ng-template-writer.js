@@ -17,15 +17,6 @@ function write(generator) {
     generator.jhiPrefixCapitalized = generator.upperFirstCamelCase(jhipsterConfig.jhiPrefix);
     generator.jhiPrefixDashed = _.kebabCase(jhipsterConfig.jhiPrefix);
 
-    generator.log('------------------------------------------------------------');
-    generator.log(`baseName=${generator.baseName}`);
-    generator.log(`packageName=${generator.packageName}`);
-    generator.log(`frontendAppName=${generator.frontendAppName}`);
-    generator.log(`enableTranslation=${generator.enableTranslation}`);
-    generator.log(`jhiPrefixDashed=${generator.jhiPrefixDashed}`);
-    generator.log(`jhiPrefixCapitalized=${generator.jhiPrefixCapitalized}`);
-    generator.log('------------------------------------------------------------');
-
     const templateDir = '../templates/angular/cookie-consent';
     const webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
@@ -63,7 +54,6 @@ function write(generator) {
         'cookie-consent.module.ts',
         'cookie-consent.service.ts'
     ].forEach((file) => {
-        generator.log(`${webappDir}app/shared/cookie-consent/${file}`);
         generator.template(
             `${templateDir}/src/main/webapp/app/shared/cookie-consent/${file}.ejs`,
             `${webappDir}app/shared/cookie-consent/${file}`
@@ -75,7 +65,6 @@ function write(generator) {
         generator.getAllInstalledLanguages()
             .forEach((language) => {
                 generator.currentLanguagePrefix = language === generator.nativeLanguage ? '' : `[${language}] `;
-                generator.log(`adding cookie consent content for ${language} language ${generator.currentLanguagePrefix}`);
                 generator.template(
                     `${templateDir}/src/main/webapp/i18n/lang/cookie-consent.json.ejs`,
                     `${webappDir}i18n/${language}/cookie-consent.json`
