@@ -1,6 +1,6 @@
 {
   "name": "generator-jhipster-cookie-consent",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Generate Cookie Consent Popup for your JHipster app",
   "keywords": [
     "ngx-cookieconsent",
