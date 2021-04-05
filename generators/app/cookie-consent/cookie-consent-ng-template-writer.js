@@ -61,10 +61,10 @@ function write(generator) {
     });
 
     // add i18n COOKIE-CONSENT JSON
-    if (generator.enableTranslation) {
+    if (jhipsterConfig.enableTranslation) {
         generator.getAllInstalledLanguages()
             .forEach((language) => {
-                generator.currentLanguagePrefix = language === generator.nativeLanguage ? '' : `[${language}] `;
+                generator.currentLanguagePrefix = language === jhipsterConfig.nativeLanguage ? '' : `[${language}] `;
                 generator.template(
                     `${templateDir}/src/main/webapp/i18n/lang/cookie-consent.json.ejs`,
                     `${webappDir}i18n/${language}/cookie-consent.json`

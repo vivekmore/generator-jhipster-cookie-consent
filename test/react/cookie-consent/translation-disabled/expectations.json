@@ -1,0 +1,15 @@
+{
+  "client": {
+    "added": [
+      "src/main/webapp/app/shared/cookie-consent/cookie-consent.tsx"
+    ],
+    "addedTests": [],
+    "skipped": [
+      "src/main/webapp/i18n/en/cookie-consent.json"
+    ],
+    "changed": [
+      "package.json",
+      "src/main/webapp/app/app.tsx"
+    ]
+  }
+}
