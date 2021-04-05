@@ -22,6 +22,11 @@ export class <%= jhiPrefixCapitalized %>CookieConsentComponent implements OnInit
     this.updateCookieConsentOnLanguageChange();
   }
 
+  ngOnDestroy(): void {
+    this.endSubscriptions.next();
+    this.endSubscriptions.complete();
+  }
+
   private updateCookieConsentOnLanguageChange(): void {
     this.translateService.onLangChange
         .pipe(
@@ -63,10 +68,5 @@ export class <%= jhiPrefixCapitalized %>CookieConsentComponent implements OnInit
       // eslint-disable-next-line no-console
       console.log(`event: ${JSON.stringify(event)}`);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.endSubscriptions.next();
-    this.endSubscriptions.complete();
   }
 }

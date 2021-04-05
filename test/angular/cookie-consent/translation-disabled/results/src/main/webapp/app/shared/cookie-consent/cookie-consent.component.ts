@@ -22,6 +22,11 @@ export class TestCookieConsentComponent implements OnInit, OnDestroy {
     this.updateCookieConsentOnLanguageChange();
   }
 
+  ngOnDestroy(): void {
+    this.endSubscriptions.next();
+    this.endSubscriptions.complete();
+  }
+
   private updateCookieConsentOnLanguageChange(): void {
     this.translateService.onLangChange
         .pipe(
@@ -63,10 +68,5 @@ export class TestCookieConsentComponent implements OnInit, OnDestroy {
       // eslint-disable-next-line no-console
       console.log(`event: ${JSON.stringify(event)}`);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.endSubscriptions.next();
-    this.endSubscriptions.complete();
   }
 }

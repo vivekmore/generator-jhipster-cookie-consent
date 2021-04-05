@@ -6,27 +6,27 @@ module.exports = {
 };
 
 function write(generator) {
-    const jhipsterAppConfig = generator.jhipsterAppConfig;
+    const jhipsterConfig = generator.jhipsterConfig;
 
-    generator.baseName = jhipsterAppConfig.baseName;
-    generator.packageName = jhipsterAppConfig.packageName;
-    generator.angularXAppName = generator.getAngularXAppName();
-    generator.enableTranslation = jhipsterAppConfig.enableTranslation;
-    generator.nativeLanguage = jhipsterAppConfig.nativeLanguage;
-    generator.useSass = jhipsterAppConfig.useSass;
-    generator.jhiPrefixCapitalized = generator.upperFirstCamelCase(jhipsterAppConfig.jhiPrefix);
-    generator.jhiPrefixDashed = _.kebabCase(jhipsterAppConfig.jhiPrefix);
+    generator.baseName = jhipsterConfig.baseName;
+    generator.packageName = jhipsterConfig.packageName;
+    generator.frontendAppName = generator.getFrontendAppName();
+    generator.enableTranslation = jhipsterConfig.enableTranslation;
+    generator.nativeLanguage = jhipsterConfig.nativeLanguage;
+    generator.useSass = jhipsterConfig.useSass;
+    generator.jhiPrefixCapitalized = generator.upperFirstCamelCase(jhipsterConfig.jhiPrefix);
+    generator.jhiPrefixDashed = _.kebabCase(jhipsterConfig.jhiPrefix);
 
     generator.log('------------------------------------------------------------');
     generator.log(`baseName=${generator.baseName}`);
     generator.log(`packageName=${generator.packageName}`);
-    generator.log(`angularXAppName=${generator.angularXAppName}`);
+    generator.log(`frontendAppName=${generator.frontendAppName}`);
     generator.log(`enableTranslation=${generator.enableTranslation}`);
     generator.log(`jhiPrefixDashed=${generator.jhiPrefixDashed}`);
     generator.log(`jhiPrefixCapitalized=${generator.jhiPrefixCapitalized}`);
     generator.log('------------------------------------------------------------');
 
-    const templateDir = `../templates/angular/${generator.templateDir}`;
+    const templateDir = '../templates/angular/cookie-consent';
     const webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
     // add required dependencies to package.json
@@ -65,7 +65,7 @@ function write(generator) {
     ].forEach((file) => {
         generator.log(`${webappDir}app/shared/cookie-consent/${file}`);
         generator.template(
-            `${templateDir}src/main/webapp/app/shared/cookie-consent/${file}.ejs`,
+            `${templateDir}/src/main/webapp/app/shared/cookie-consent/${file}.ejs`,
             `${webappDir}app/shared/cookie-consent/${file}`
         );
     });
@@ -77,7 +77,7 @@ function write(generator) {
                 generator.currentLanguagePrefix = language === generator.nativeLanguage ? '' : `[${language}] `;
                 generator.log(`adding cookie consent content for ${language} language ${generator.currentLanguagePrefix}`);
                 generator.template(
-                    `${templateDir}src/main/webapp/i18n/lang/cookie-consent.json.ejs`,
+                    `${templateDir}/src/main/webapp/i18n/lang/cookie-consent.json.ejs`,
                     `${webappDir}i18n/${language}/cookie-consent.json`
                 );
             }, generator);

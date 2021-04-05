@@ -5,9 +5,9 @@ import { NgcContentOptions, NgcCookieConsentService } from 'ngx-cookieconsent';
 export class TestCookieConsentService {
   constructor(private ngcCookieConsentService: NgcCookieConsentService) {}
 
-  public updateCookieConsentContent(content?: NgcContentOptions): void {
+  updateCookieConsentContent(content?: NgcContentOptions): void {
     const config = this.ngcCookieConsentService.getConfig();
-    const configContent = config.content || {};
+    const configContent = config.content ?? {};
     config.content = { ...configContent, ...content };
     this.ngcCookieConsentService.destroy();
     this.ngcCookieConsentService.init({ ...config });
