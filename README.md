@@ -15,18 +15,39 @@ This generator adds a fully functional [cookie consent popup](docs/features/COOK
 
 # Installing JHipster
 To install JHipster globally:
+
+#### with NPM
+
+To install this module globally:
 ```bash
 npm install -g generator-jhipster
 ```
+
+
+#### with Yarn
+
+To install this module globally:
+```bash
+yarn global add generator-jhipster
+```
+
 [More information on official site](https://jhipster.github.io/installation.html)
 
 
 # Installing the generator-jhipster-cookie-consent module
 
-To install this module globally (via npm or yarn):
+#### with NPM
+
+To install this module globally:
 ```bash
 npm install -g generator-jhipster-cookie-consent
+```
 
+
+#### with Yarn
+
+To install this module globally:
+```bash
 yarn global add generator-jhipster-cookie-consent
 ```
 

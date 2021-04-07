@@ -7,27 +7,32 @@ The following (client-side) artifacts are modified:
 
 ##### 1. Angular application:
  
-- :pencil: `package.json`
-- :pencil: `package-lock.json`
-- :pencil: `src/main/webapp/app/app.module.ts`
-- :pencil: `src/main/webapp/app/layouts/main/main.component.html`
-- :page_facing_up: `src/main/webapp/app/shared/cookie-consent/cookie-consent.component.ts`
-- :page_facing_up: `src/main/webapp/app/shared/cookie-consent/cookie-consent.constants.ts`
-- :page_facing_up: `src/main/webapp/app/shared/cookie-consent/cookie-consent.module.ts`
-- :page_facing_up: `src/main/webapp/app/shared/cookie-consent/cookie-consent.service.ts`
-- :pencil: `src/main/webapp/app/shared/shared-libs.module.ts`
-- :pencil: `src/main/webapp/content/scss/vendor.scss`
-- :page_facing_up: `src/main/webapp/i18n/<lang>/cookie-consent.json`
-
-:page_facing_up: added files
-:pencil: modified files
+- *️⃣ `package.json`
+- *️⃣ `package-lock.json`
+- *️⃣ `src/main/webapp/app/app.module.ts`
+- *️⃣ `src/main/webapp/app/layouts/main/main.component.html`
+- 🆕 `src/main/webapp/app/shared/cookie-consent/cookie-consent.component.ts`
+- 🆕 `src/main/webapp/app/shared/cookie-consent/cookie-consent.constants.ts`
+- 🆕 `src/main/webapp/app/shared/cookie-consent/cookie-consent.module.ts`
+- 🆕 `src/main/webapp/app/shared/cookie-consent/cookie-consent.service.ts`
+- *️⃣ `src/main/webapp/app/shared/shared-libs.module.ts`
+- *️⃣ `src/main/webapp/content/scss/vendor.scss`
+- 🆕 `src/main/webapp/i18n/<lang>/cookie-consent.json`
 
 ##### 2. React:
- * Not supported currently
+
+- *️⃣ `package.json`
+- *️⃣ `package-lock.json`
+- *️⃣ `src/main/webapp/app/app.tsx`
+- 🆕 `src/main/webapp/app/shared/cookie-consent/cookie-consent.tsx`
+- 🆕 `src/main/webapp/i18n/<lang>/cookie-consent.json`
 
 ##### 3. Vue:
  * Not supported currently
 
+
+🆕 added files
+*️⃣ modified files
 
 -----
 
