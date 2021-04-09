@@ -14,6 +14,12 @@ This generator adds a fully functional [cookie consent popup](docs/features/COOK
 your [JHipster](http://jhipster.github.io/) application.
 ![img.png](docs/features/img.png)
 
+Supported frontends:
+
+- **Angular**
+- **React**
+- _Vue.js_ coming soon
+
 # Installing JHipster
 
 To install JHipster globally:
