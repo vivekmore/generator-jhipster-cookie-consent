@@ -45,14 +45,14 @@
 
 7. Merge the upgrade branch to develop
     ```bash
-    git co develop
+    git checkout develop
     git merge upgrade --no-ff
     git push origin develop
     ```
 
 8. Merge the tag to main (e.g. to merge a newly created v1.0.0 tag to main)
     ```bash
-    git co main
+    git checkout main
     git merge v1.0.0
     git push origin main
     ```
