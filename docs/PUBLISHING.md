@@ -50,15 +50,16 @@
     git push origin develop
     ```
 
-8. Merge the tag to master (e.g. to merge a newly created v1.0.0 tag to master)
+8. Merge the tag to main (e.g. to merge a newly created v1.0.0 tag to main)
     ```bash
-    git co master
+    git co main
     git merge v1.0.0
-    git push origin master
+    git push origin main
     ```
 
 # Troubleshooting
 See [this page](https://docs.npmjs.com/getting-started/working_with_tokens#how-to-create-a-new-full-permission-token) for token generation
-    ```bash
-    npm token create
-    ```
+
+```bash
+npm token create
+```
