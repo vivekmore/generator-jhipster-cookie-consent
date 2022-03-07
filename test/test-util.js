@@ -38,34 +38,39 @@ function commonTests(testConfig) {
     } = testConfig;
 
     _.forEach(expectedFiles.client.added, (file) => {
-        it(`creates expected production file: ${file}`, () => {
+        it(`creates expected production file: ${file}`, (done) => {
             assert.file(file);
+            done();
         });
 
-        it(`production file has right content: ${file}`, () => {
+        it(`production file has right content: ${file}`, (done) => {
             const actualContent = fs.readFileSync(file, 'utf8');
             const expectedContent = fs.readFileSync(resultsDir + file, 'utf8');
             assert.textEqual(actualContent, expectedContent);
+            done();
         });
     });
 
     _.forEach(expectedFiles.client.addedTests, (file) => {
-        it(`creates expected test file: ${file}`, () => {
+        it(`creates expected test file: ${file}`, (done) => {
             assert.file(file);
+            done();
         });
 
-        it(`test file has right content: ${file}`, () => {
+        it(`test file has right content: ${file}`, (done) => {
             const actualContent = fs.readFileSync(file, 'utf8');
             const expectedContent = fs.readFileSync(resultsDir + file, 'utf8');
             assert.textEqual(actualContent, expectedContent);
+            done();
         });
     });
 
     _.forEach(expectedFiles.client.changed, (file) => {
-        it(`modifies expected production file: ${file}`, () => {
+        it(`modifies expected production file: ${file}`, (done) => {
             const actualContent = fs.readFileSync(file, 'utf8');
             const expectedContent = fs.readFileSync(resultsDir + file, 'utf8');
             assert.textEqual(actualContent, expectedContent);
+            done();
         });
     });
 }
