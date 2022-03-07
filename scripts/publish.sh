@@ -15,12 +15,12 @@ function parseOptions() {
     --major)
       VERSIONING="major"
       ;;
+    --otp)
+      shift
+      OTP="$1"
+      ;;
     -d | --dry-run)
       DRY_RUN=true
-      ;;
-    *)
-      echo "Unknown command line argument: $1"
-      return 1
       ;;
     esac
     shift
@@ -61,9 +61,11 @@ function publish() {
         return $?;
     fi
 
-    echo "Enter the otp to login to npmjs.com: "
-    read -r otp
-    (run_command "npm publish --otp $otp")
+    if [ -z "$OTP" ]; then
+        echo "Enter the otp to login to npmjs.com: "
+        read -r OTP
+    fi
+    (run_command "npm publish --otp $OTP")
     if [ $? -ne 0 ]; then
         echo "unable to login to npmjs.com"
         return $?;
@@ -129,6 +131,11 @@ function run_command() {
 function reset_global_vars() {
     unset VERSIONING
     unset DRY_RUN
+    unset SCRIPT_DIR
+    unset OTP
 }
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd "$SCRIPT_DIR" || return
+cd ..
 publish "$@"
