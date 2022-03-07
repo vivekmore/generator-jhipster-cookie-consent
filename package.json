@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "7.2.0",
+    "generator-jhipster": "7.3.0",
     "kind-of": ">=6.0.3",
     "lodash": "4.17.21",
     "minimist": "1.2.5",
@@ -61,7 +61,7 @@
     "pretest": "eslint .",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test": "mocha --timeout 3000 test/**/test.js",
+    "test": "mocha test/**/test.js",
     "preversion": "npm i && npm prune && npm test",
     "postversion": "git push --tags",
     "bump-patch": "npm version patch",
@@ -77,6 +77,7 @@
   "mocha": {
     "colors": true,
     "slow": 5,
+    "timeout": 3000,
     "reporter": "spec",
     "ui": "bdd"
   }
