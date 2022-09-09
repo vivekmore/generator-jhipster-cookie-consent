@@ -9,7 +9,7 @@
   ],
   "dependencies": {
     "react": "17.0.1",
-    "react-cookie-consent": "6.2.3"
+    "react-cookie-consent": "8.0.1"
   },
   "devDependencies": {
     "@testing-library/react": "11.2.6"

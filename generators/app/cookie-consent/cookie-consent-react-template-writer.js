@@ -12,7 +12,7 @@ function write(generator) {
     const webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
     // add required dependencies to package.json
-    generator.addNpmDependency('react-cookie-consent', '6.2.3');
+    generator.addNpmDependency('react-cookie-consent', '8.0.1');
 
     // update app.tsx
     const appTsx = `${webappDir}app/app.tsx`;
