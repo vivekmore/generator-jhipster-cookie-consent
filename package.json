@@ -18,7 +18,7 @@
   "homepage": "https://github.com/vivekmore/generator-jhipster-cookie-consent",
   "author": {
     "name": "Vivek More",
-    "email": "vivz.thats.me@gmail.com",
+    "email": "vivekmore@noreply.users.github.com",
     "url": "https://github.com/vivekmore"
   },
   "engines": {
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "7.5.0",
+    "generator-jhipster": "7.6.0",
     "kind-of": ">=6.0.3",
     "lodash": "4.17.21",
     "minimist": "1.2.6",
