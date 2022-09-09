@@ -22,8 +22,9 @@ function write(generator) {
     generator.replaceContent(appTsx, '<Footer />', appCookieConsent);
 
     // add cookie-consent.tsx
+    const templateFile = generator.enableTranslation ? 'cookie-consent-i18n.tsx.ejs' : 'cookie-consent.tsx.ejs';
     generator.template(
-        `${templateDir}/src/main/webapp/app/shared/cookie-consent/cookie-consent.tsx.ejs`,
+        `${templateDir}/src/main/webapp/app/shared/cookie-consent/${templateFile}`,
         `${webappDir}app/shared/cookie-consent/cookie-consent.tsx`
     );
 
