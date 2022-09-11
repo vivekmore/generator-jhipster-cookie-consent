@@ -29,10 +29,10 @@ inputs:
     description: 'Application packaging'
     required: false
     default: jar
-  generator-jhipster-directory:
+  gjcc-directory:
     description: 'JHipster Generator path'
     required: false
-    default: ${{ github.workspace }}
+    default: ${{ github.workspace }}/generator-jhipster-cookie-consent
   generator-jhipster-repository:
     description: 'JHipster Generator repository'
     required: false
@@ -83,7 +83,7 @@ runs:
     - name: 'ENV: setup variables'
       id: variables
       run: |
-        JHI_HOME="${{ inputs.generator-jhipster-directory }}"
+        JHI_HOME="${{ inputs.gjcc-directory }}"
         JHI_WORKSPACE="${{ github.workspace }}"
         JHI_CLI_PACKAGE="${{inputs.package-with-executable}}"
         source "$JHI_HOME/test-integration/scripts/00-init-env.sh"

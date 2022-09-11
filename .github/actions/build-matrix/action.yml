@@ -12,7 +12,7 @@ inputs:
     description: 'Skip git changes detection'
     required: false
     default: ${{ (github.event.pull_request && 'false') || 'true' }}
-  generator-jhipster-directory:
+  gjcc-directory:
     description: 'JHipster Generator path'
     required: false
     default: ${{ github.workspace }}
@@ -77,7 +77,7 @@ runs:
       id: build-changes
       shell: bash
       run: |
-        SKIP_WORKFLOW=${{inputs.skip-workflow}} SKIP_CHANGES_DETECTION=${{inputs.skip-changes-detection}} ${{ inputs.generator-jhipster-directory }}/test-integration/scripts/99-build-changes.sh
+        SKIP_WORKFLOW=${{inputs.skip-workflow}} SKIP_CHANGES_DETECTION=${{inputs.skip-changes-detection}} ${{ inputs.gjcc-directory }}/test-integration/scripts/99-build-changes.sh
         echo "SKIP_WORKFLOW:          $SKIP_WORKFLOW"
         echo "SKIP_CHANGES_DETECTION: $SKIP_CHANGES_DETECTION"
 
@@ -85,7 +85,7 @@ runs:
       id: build-matrix
       shell: bash
       run: |
-        cd ${{ inputs.generator-jhipster-directory }}
+        cd ${{ inputs.gjcc-directory }}
         echo '{ "include" : [] }' > matrix.json
 
         if [[ "true" == "${{ steps.build-changes.outputs.angular }}" || "true" == "${{ steps.build-changes.outputs.client-common }}" ]]; then
