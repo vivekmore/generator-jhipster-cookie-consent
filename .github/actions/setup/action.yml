@@ -29,10 +29,6 @@ inputs:
     description: 'Application packaging'
     required: false
     default: jar
-  enable-testcontainers:
-    description: 'Enable test containers'
-    required: false
-    default: 'true'
   generator-jhipster-directory:
     description: 'JHipster Generator path'
     required: false
@@ -64,7 +60,7 @@ inputs:
   executable:
     description: 'Executable'
     required: false
-    default: npx generator-jhipster@7.3.1
+    default: jhipster
 outputs:
   java-version:
     description: 'Java version'
@@ -113,8 +109,6 @@ runs:
 
         echo "JHI_PROFILE=${{inputs.application-environment}}" >> $GITHUB_ENV
         test ${{inputs.application-packaging}} != war || echo "JHI_WAR=1" >> $GITHUB_ENV
-        test ${{inputs.enable-testcontainers}} != true || echo "JHI_TESTCONTAINERS=true" >> $GITHUB_ENV
-        test ${{inputs.enable-testcontainers}} != true || echo "SPRING_PROFILES_ACTIVE=testcontainers" >> $GITHUB_ENV
 
         echo "JHI_GENERATE_SKIP_CONFIG=1" >> $GITHUB_ENV
         echo "JHI_DISABLE_WEBPACK_LOGS=true" >> $GITHUB_ENV
@@ -127,6 +121,12 @@ runs:
         echo "SPRING_OUTPUT_ANSI_ENABLED=ALWAYS" >> $GITHUB_ENV
         echo "SPRING_JPA_SHOW_SQL=false" >> $GITHUB_ENV
         echo "NG_CLI_ANALYTICS=ci" >> $GITHUB_ENV
+
+        JHI_PROJECT_VERSION=$JHI_VERSION
+        if [[ "true" != "{{ startsWith(github.ref, 'refs/tags/v') }}" ]]; then
+          JHI_PROJECT_VERSION="$JHI_VERSION-git"
+        fi
+        echo "JHI_PROJECT_VERSION=$JHI_PROJECT_VERSION" >> $GITHUB_ENV
 
         if [[ "${{inputs.jhipster-bom-branch}}" != "release" && "${{inputs.jhipster-bom-branch}}" != "ignore" ]]; then
           echo "JHI_BOM_VERSION=0.0.0-CICD" >> $GITHUB_ENV
