@@ -64,6 +64,10 @@ else
     if [ "$JHI_GEN_BRANCH" == "latest" ]; then
         JHI_GEN_BRANCH=$(git describe --abbrev=0)
     fi
+
+    echo "*** generator-jhipster@$GJCC_JHIPSTER_VERSION: install globally"
+    npm install -g generator-jhipster@"$GJCC_JHIPSTER_VERSION"
+
     echo "*** generator-jhipster-cookie-consent: GJCC_REPO=$GJCC_REPO with JHI_GEN_BRANCH=$JHI_GEN_BRANCH"
     git clone -b "$JHI_GEN_BRANCH" --depth 5 "$GJCC_REPO" generator-jhipster-cookie-consent
     cd generator-jhipster-cookie-consent

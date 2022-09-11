@@ -41,6 +41,10 @@ inputs:
     description: 'generator-jhipster-cookie-consent repository'
     required: false
     default: https://github.com/vivekmore/generator-jhipster-cookie-consent.git
+  gjcc-jhipster-version:
+    description: 'generator-jhipster version'
+    required: true
+    default: '7.6.0'
   generator-jhipster-branch:
     description: 'JHipster Generator branch'
     required: false
@@ -103,6 +107,7 @@ runs:
         echo "JHI_LIB_HOME=${{inputs.jhipster-bom-directory}}" >> $GITHUB_ENV
         echo "JHI_GEN_REPO=${{inputs.generator-jhipster-repository}}" >> $GITHUB_ENV
         echo "GJCC_REPO=${{inputs.gjcc-repository}}" >> $GITHUB_ENV
+        echo "GJCC_JHIPSTER_VERSION=${{inputs.gjcc-jhipster-version}}" >> $GITHUB_ENV
         echo "JHI_GEN_BRANCH=${{inputs.generator-jhipster-branch}}" >> $GITHUB_ENV
         echo "JHI_FOLDER_APP=${{inputs.application-path}}" >> $GITHUB_ENV
 
