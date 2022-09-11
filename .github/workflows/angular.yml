@@ -29,7 +29,7 @@ jobs:
       server: ${{ steps.build.outputs.server }}
       any: ${{ steps.build.outputs.any }}
     steps:
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-cookie-consent'
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
@@ -74,10 +74,10 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-cookie-consent'
         uses: actions/checkout@v3
         with:
-          path: generator-jhipster
+          path: generator-jhipster-cookie-consent
           fetch-depth: 2
       - name: 'SETUP: environment'
         id: setup
