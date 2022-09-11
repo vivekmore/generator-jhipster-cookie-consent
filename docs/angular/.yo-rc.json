@@ -16,7 +16,7 @@
     "otherModules": [],
     "pages": [],
     "creationTimestamp": 1646813496404,
-    "clientFramework": "angular",
+    "clientFramework": "angularX",
     "withAdminUi": false,
     "clientTheme": "none",
     "enableTranslation": true,

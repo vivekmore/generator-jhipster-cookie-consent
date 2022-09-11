@@ -5,7 +5,7 @@
     "baseName": "sampleWebfluxNodb",
     "buildTool": "maven",
     "cacheProvider": "no",
-    "clientFramework": "angular",
+    "clientFramework": "angularX",
     "clientPackageManager": "npm",
     "clientTheme": "none",
     "clientThemeVariant": "",
