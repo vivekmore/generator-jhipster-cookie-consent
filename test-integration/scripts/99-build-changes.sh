@@ -120,7 +120,7 @@ git -c color.ui=always diff --exit-code @~1 -- \
 echo "::endgroup::"
 
 echo "::group::Check Base"
-git -c color.ui=always diff --exit-code @~1 -- $(ls generators/*.*) \
+git -c color.ui=always diff --exit-code @~1 -- "$(ls generators/*.*)" \
   || CLIENT=true SERVER=true COMMON=true ANY=true
 echo "::endgroup::"
 

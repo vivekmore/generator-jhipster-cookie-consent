@@ -21,7 +21,7 @@ function usage() {
 }
 
 function generateProject() {
-    cd "$mydir"
+    cd "$currentDir"
 
     echo "JHI_FOLDER_APP=$JHI_FOLDER_APP"
     echo "JHI_APP=$JHI_APP"
@@ -31,7 +31,7 @@ function generateProject() {
         echo "*** Create $JHI_FOLDER_APP"
         mkdir -p "$JHI_FOLDER_APP"
     fi
-    if [ ! -z "$(ls -A $JHI_FOLDER_APP)" ]; then
+    if [ -n "$(ls -A "$JHI_FOLDER_APP")" ]; then
         echo "*** The folder is not empty: $JHI_FOLDER_APP"
         exit 1
     else
@@ -49,11 +49,11 @@ function generateProject() {
     ls -al "$JHI_FOLDER_APP"/
 }
 
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-JHI_SAMPLES="$mydir/samples"
+currentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+JHI_SAMPLES="$currentDir/samples"
 
 if [ "$1" = "list" ]; then
-    for dir in $(ls -1 "$JHI_SAMPLES"); do
+    for dir in "$JHI_SAMPLES"/*; do
         if [ -f "$JHI_SAMPLES/$dir/.yo-rc.json" ] && [[ $dir != *-sample ]]; then
             echo "$dir"
         fi

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source $(dirname $0)/00-init-env.sh
+source "$(dirname "$0")"/00-init-env.sh
 
 #-------------------------------------------------------------------------------
 # Specific for couchbase

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-source $(dirname $0)/00-init-env.sh
+source "$(dirname "$0")"/00-init-env.sh
 
 #-------------------------------------------------------------------------------
 # Install JHipster Dependencies and Server-side library

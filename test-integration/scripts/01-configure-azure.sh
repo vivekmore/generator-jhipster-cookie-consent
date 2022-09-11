@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-source $(dirname $0)/00-init-env.sh
+source "$(dirname "$0")"/00-init-env.sh
 
 if [[ "$JHI_PROFILE" == "" ]]; then
     echo "##vso[task.setvariable variable=JHI_PROFILE]dev"

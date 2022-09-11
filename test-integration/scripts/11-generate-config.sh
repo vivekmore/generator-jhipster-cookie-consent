@@ -16,8 +16,8 @@ if [[ "$3" != "" ]]; then
 fi
 
 set -e
-if [[ -a $(dirname $0)/00-init-env.sh ]]; then
-    source $(dirname $0)/00-init-env.sh
+if [[ -a $(dirname "$0")/00-init-env.sh ]]; then
+    source "$(dirname "$0")"/00-init-env.sh
 else
     echo "*** 00-init-env.sh not found"
 fi
@@ -190,7 +190,7 @@ fi
 # Generate jdl entities
 #-------------------------------------------------------------------------------
 if [[ "$JHI_JDL_ENTITY" != "" && "$JHI_JDL_ENTITY" != "none" ]]; then
-    jhipster --no-insight jdl "$JHI_SAMPLES"/jdl-entities/$JHI_JDL_ENTITY.jdl --json-only
+    jhipster --no-insight jdl "$JHI_SAMPLES"/jdl-entities/"$JHI_JDL_ENTITY".jdl --json-only
 fi
 
 #-------------------------------------------------------------------------------

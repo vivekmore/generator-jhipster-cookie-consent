@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 set -e
-if [[ -a $(dirname $0)/00-init-env.sh ]]; then
-    source $(dirname $0)/00-init-env.sh
+if [[ -a $(dirname "$0")/00-init-env.sh ]]; then
+    source "$(dirname "$0")"/00-init-env.sh
 else
     echo "*** 00-init-env.sh not found"
 fi
@@ -21,7 +21,7 @@ moveEntity() {
 }
 
 prepareFolder() {
-    if [[$(dirname $(pwd)) != $(dirname $JHI_FOLDER_APP)]]; then
+    if [[ $(dirname "$(pwd)") != $(dirname "$JHI_FOLDER_APP") ]]; then
       rm -rf "$JHI_FOLDER_APP"
     fi
     mkdir -p "$JHI_FOLDER_APP"/.jhipster/

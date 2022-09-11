@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-source $(dirname $0)/00-init-env.sh
+source "$(dirname "$0")"/00-init-env.sh
 
 #-------------------------------------------------------------------------------
 # Force no insight
@@ -17,13 +17,13 @@ if [[ "$JHI_ENTITY" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
     mkdir -p "$JHI_FOLDER_APP"
     IFS=','
-    for i in `echo "$JHI_APP"`
+    for i in $("$JHI_APP")
     do
         cp -f "$JHI_SAMPLES"/"$i"/*.jdl "$JHI_FOLDER_APP"/
     done
     cd "$JHI_FOLDER_APP"
     ls -la "$JHI_FOLDER_APP"/
-    eval "$JHI_CLI import-jdl *.jdl --no-insight $@"
+    eval "$JHI_CLI import-jdl *.jdl --no-insight $*"
 
 elif [[ "$JHI_APP" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ elif [[ "$JHI_APP" == "jdl" ]]; then
     mkdir -p "$JHI_FOLDER_APP"
 
     IFS=','
-    for i in `echo "$JHI_JDL_APP"`
+    for i in $("$JHI_JDL_APP")
     do
         if [[ -f "$i" ]]; then
             cp -f "$i" "$JHI_FOLDER_APP"/
@@ -54,7 +54,7 @@ elif [[ "$JHI_APP" == "jdl" ]]; then
     ls -la "$JHI_FOLDER_APP"/
 
     cd "$JHI_FOLDER_APP"
-    eval "$JHI_CLI import-jdl *.jdl --no-insight $@"
+    eval "$JHI_CLI import-jdl *.jdl --no-insight $*"
 
 else
     #-------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ else
     fi
 
     cd "$JHI_FOLDER_APP"
-    eval "$JHI_CLI --force --no-insight --skip-checks --with-entities $@"
+    eval "$JHI_CLI --force --no-insight --skip-checks --with-entities $*"
 
 fi
 

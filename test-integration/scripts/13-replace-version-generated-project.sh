@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-source $(dirname $0)/00-init-env.sh
+source "$(dirname "$0")"/00-init-env.sh
 
 
 if [[ "$JHI_LIB_BRANCH" == "release" ]]; then
