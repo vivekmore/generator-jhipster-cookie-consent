@@ -81,7 +81,7 @@ jobs:
           fetch-depth: 2
       - name: 'SETUP: environment'
         id: setup
-        uses: ./generator-jhipster/.github/actions/setup
+        uses: ./generator-jhipster-cookie-consent/.github/actions/setup
         with:
           entities-sample: ${{ matrix.entity }}
           jdl-entities-sample: ${{ matrix.jdl-entity }}
@@ -148,14 +148,14 @@ jobs:
         continue-on-error: true
         id: base-app
         if: github.event.pull_request
-        uses: ./generator-jhipster/.github/actions/compare-base
+        uses: ./generator-jhipster-cookie-consent/.github/actions/compare-base
         with:
           extra-args: '--skip-jhipster-dependencies ${{ matrix.extra-args }}'
       - name: 'MERGE: compare changes'
         continue-on-error: true
         id: compare
         if: steps.base-app.outcome == 'success'
-        uses: ./generator-jhipster/.github/actions/compare
+        uses: ./generator-jhipster-cookie-consent/.github/actions/compare
         with:
           application-path: ${{ steps.base-app.outputs.application-path }}
       #----------------------------------------------------------------------
