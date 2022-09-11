@@ -64,9 +64,9 @@ else
     if [ "$JHI_GEN_BRANCH" == "latest" ]; then
         JHI_GEN_BRANCH=$(git describe --abbrev=0)
     fi
-    echo "*** generator-jhipster: JHI_GEN_REPO=$JHI_GEN_REPO with JHI_GEN_BRANCH=$JHI_GEN_BRANCH"
-    git clone -b "$JHI_GEN_BRANCH" --depth 5 "$JHI_GEN_REPO" generator-jhipster
-    cd generator-jhipster
+    echo "*** generator-jhipster-cookie-consent: GJCC_REPO=$GJCC_REPO with JHI_GEN_BRANCH=$JHI_GEN_BRANCH"
+    git clone -b "$JHI_GEN_BRANCH" --depth 5 "$GJCC_REPO" generator-jhipster-cookie-consent
+    cd generator-jhipster-cookie-consent
     git --no-pager log -n 10 --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
     npm ci --prod
