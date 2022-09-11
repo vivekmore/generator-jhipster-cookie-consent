@@ -2,7 +2,7 @@
  * Microservice stack sample to test compilation and base microfrontend functionality.
  *
  * Test focus:
- * - clientFramework: angularX with microfrontend
+ * - clientFramework: angular with microfrontend
  * - serviceDiscovery: eureka
  * - authenticationType: jwt
  * - prodDatabaseType: postgresql
@@ -16,22 +16,23 @@
  * - buildTool: maven, gradle
  */
 
-/* reactive, maven */ 
+/* reactive, maven */
 application {
   config {
     applicationType gateway
     authenticationType jwt
     baseName gateway
     buildTool maven
-    clientFramework angularX
+    clientFramework angular
     creationTimestamp 1617901618886
     jwtSecretKey "ZjY4MTM4YjI5YzMwZjhjYjI2OTNkNTRjMWQ5Y2Q0Y2YwOWNmZTE2NzRmYzU3NTMwM2NjOTE3MTllOTM3MWRkMzcyYTljMjVmNmQ0Y2MxOTUzODc0MDhhMTlkMDIxMzI2YzQzZDM2ZDE3MmQ3NjVkODk3OTVmYzljYTQyZDNmMTQ="
     packageName com.okta.developer.gateway
     prodDatabaseType postgresql
     serviceDiscoveryType eureka
     testFrameworks [cypress]
+    microfrontends [blog, notification, store]
   }
-  entities *
+  entities UserData
 }
 
 /* imperative, maven */
@@ -42,7 +43,7 @@ application {
     baseName blog
     buildTool maven
     cacheProvider ehcache
-    clientFramework angularX
+    clientFramework angular
     creationTimestamp 1617901618887
     jwtSecretKey "ZjY4MTM4YjI5YzMwZjhjYjI2OTNkNTRjMWQ5Y2Q0Y2YwOWNmZTE2NzRmYzU3NTMwM2NjOTE3MTllOTM3MWRkMzcyYTljMjVmNmQ0Y2MxOTUzODc0MDhhMTlkMDIxMzI2YzQzZDM2ZDE3MmQ3NjVkODk3OTVmYzljYTQyZDNmMTQ="
     packageName com.okta.developer.blog
@@ -62,7 +63,7 @@ application {
     baseName store,
     buildTool gradle
     cacheProvider ehcache
-    clientFramework angularX
+    clientFramework angular
     creationTimestamp 1617901618888
     dtoSuffix Rest
     entitySuffix Entity
@@ -83,7 +84,7 @@ application {
     authenticationType jwt
     baseName notification,
     buildTool gradle
-    clientFramework angularX
+    clientFramework angular
     creationTimestamp 1617901618889
     dtoSuffix Rest
     entitySuffix Entity
@@ -151,10 +152,6 @@ paginate Product with pagination
 service Product with serviceClass
 service Notification with serviceImpl
 dto Blog, Post, Tag, Notification with mapstruct
-
-microservice Product with store
-microservice Blog, Post, Tag with blog
-microservice Notification with notification
 
 deployment {
   deploymentType docker-compose,

@@ -32,7 +32,7 @@ inputs:
   generator-jhipster-directory:
     description: 'JHipster Generator path'
     required: false
-    default: ${{ github.workspace }}/generator-jhipster
+    default: ${{ github.workspace }}
   generator-jhipster-repository:
     description: 'JHipster Generator repository'
     required: false

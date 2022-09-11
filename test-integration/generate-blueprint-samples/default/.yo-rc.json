@@ -1,7 +1,9 @@
 {
   "generator-jhipster": {
+    "additionalSubGenerators": "",
     "baseName": "foo",
     "cli": true,
+    "localBlueprint": false,
     "generators": {
       "app": {
         "command": false,
