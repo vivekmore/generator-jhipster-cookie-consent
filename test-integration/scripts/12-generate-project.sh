@@ -3,6 +3,11 @@
 set -e
 source "$(dirname "$0")"/00-init-env.sh
 
+print_and_execute() {
+    echo "$1"
+    eval "$1"
+}
+
 #-------------------------------------------------------------------------------
 # Force no insight
 #-------------------------------------------------------------------------------
@@ -23,7 +28,7 @@ if [[ "$JHI_ENTITY" == "jdl" ]]; then
     done
     cd "$JHI_FOLDER_APP"
     ls -la "$JHI_FOLDER_APP"/
-    eval "$JHI_CLI import-jdl *.jdl --no-insight $*"
+    print_and_execute "$JHI_CLI import-jdl *.jdl --no-insight $*"
 
 elif [[ "$JHI_APP" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
@@ -54,7 +59,7 @@ elif [[ "$JHI_APP" == "jdl" ]]; then
     ls -la "$JHI_FOLDER_APP"/
 
     cd "$JHI_FOLDER_APP"
-    eval "$JHI_CLI import-jdl *.jdl --no-insight $*"
+    print_and_execute "$JHI_CLI import-jdl *.jdl --no-insight $*"
 
 else
     #-------------------------------------------------------------------------------
@@ -69,7 +74,7 @@ else
     fi
 
     cd "$JHI_FOLDER_APP"
-    eval "$JHI_CLI --force --no-insight --skip-checks --with-entities $*"
+    print_and_execute "$JHI_CLI --force --no-insight --skip-checks --with-entities $*"
 
 fi
 
