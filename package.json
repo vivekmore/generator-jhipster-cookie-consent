@@ -10,6 +10,7 @@
     "eu",
     "scaffold",
     "angular",
+    "react",
     "generator",
     "yeoman-generator",
     "jhipster",
@@ -35,7 +36,7 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "generator-jhipster": "7.6.0",
+    "generator-jhipster": "7.7.0",
     "kind-of": ">=6.0.3",
     "lodash": "4.17.21",
     "minimist": "1.2.6",
