@@ -171,7 +171,11 @@ jobs:
         continue-on-error: ${{matrix.continue-on-backend-tests-error || false}}
       - name: 'TESTS: frontend'
         if: steps.compare.outputs.equals != 'true' && needs.build-matrix.outputs.client != 'false'
-        run: npm run ci:frontend:test
+        run: |
+            echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - START  🩹🩹🩹"
+            npm i --save-dev @angular-devkit/build-angular@^13.2.5
+            echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - FINISH 🩹🩹🩹"
+            npm run ci:frontend:test
       - name: 'TESTS: packaging'
         if: steps.compare.outputs.equals != 'true'
         run: npm run ci:e2e:package
