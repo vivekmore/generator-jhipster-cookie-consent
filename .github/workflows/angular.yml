@@ -3,6 +3,7 @@ concurrency:
   # Group PRs by head_ref, push to main branch by commit id, and others branch by ref.
   group: ${{ github.workflow }}-${{ github.head_ref || (github.ref == 'refs/heads/main' && github.sha) || github.ref }}
   cancel-in-progress: true
+
 on:
   push:
     branches-ignore:
@@ -20,6 +21,7 @@ on:
       - 'package*.json'
       - 'generators/*client/templates/react/**'
       - 'generators/*client/templates/vue/**'
+
 jobs:
   build-matrix:
     runs-on: ubuntu-20.04
@@ -83,10 +85,9 @@ jobs:
         id: setup
         uses: ./generator-jhipster-cookie-consent/.github/actions/setup
         with:
-          application-sample: ${{ matrix.jhi-app-sample || matrix.app-sample }}
           entities-sample: ${{ matrix.entity }}
           jdl-entities-sample: ${{ matrix.jdl-entity }}
-          jdl-sample: ${{ matrix.jdl-samples || '' }}
+          application-sample: ${{ matrix.jhi-app-sample || matrix.app-sample }}
           application-environment: ${{ matrix.environment }}
           application-packaging: ${{ (matrix.war == 1 && 'war') || 'jar' }}
       - uses: actions/setup-node@v3
@@ -102,16 +103,16 @@ jobs:
           path: |
             ~/.npm
             ~/.cache/Cypress/
-          key: ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.cache }}-${{ hashFiles('generator-jhipster-cookie-consent/package-lock.json', 'generator-jhipster-cookie-consent/**/package.json') }}
+          key: ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.cache }}-${{ hashFiles('generator-jhipster/package-lock.json', 'generator-jhipster/**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.npm-cache }}-
+            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.cache }}-
             ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-
             ${{ runner.os }}-node-${{ steps.setup.outputs.date }}
       - name: 'SETUP: load maven cache'
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster-cookie-consent/**/pom.xml.ejs') }}
+          key: ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster/**/pom.xml.ejs') }}
           restore-keys: |
             ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-
             ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}
@@ -122,7 +123,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster-cookie-consent/**/build.gradle.ejs') }}
+          key: ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster/**/build.gradle.ejs') }}
           restore-keys: |
             ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}-
             ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}
@@ -130,10 +131,6 @@ jobs:
         run: $JHI_SCRIPTS/03-system.sh
       - name: 'TOOLS: configure git'
         run: $JHI_SCRIPTS/04-git-config.sh
-      # Update global NPM for workspaces support
-      - name: 'Install required NPM version'
-        if: matrix.workspaces == 'true'
-        run: npm install -g npm@${{ steps.setup.outputs.npm-version }} || true
       #----------------------------------------------------------------------
       # Install JHipster and generate project+entities
       #----------------------------------------------------------------------
@@ -142,12 +139,7 @@ jobs:
       - name: 'GENERATION: config'
         run: $JHI_SCRIPTS/11-generate-config.sh
       - name: 'GENERATION: project'
-        run: $JHI_SCRIPTS/12-generate-project.sh --skip-jhipster-dependencies --skip-install ${{ matrix.extra-args }} ${{ matrix.new-extra-args }}
-      - name: 'GENERATION: workspace git'
-        if: matrix.workspaces == 'true'
-        run: |
-          git add .
-          git commit -m "Commit workspaces"
+        run: $JHI_SCRIPTS/12-generate-project.sh --skip-jhipster-dependencies ${{ matrix.extra-args }} ${{ matrix.new-extra-args }}
       - name: 'GENERATION: jhipster info'
         run: $JHI_SCRIPTS/14-jhipster-info.sh
       #----------------------------------------------------------------------
@@ -156,9 +148,7 @@ jobs:
       - name: 'MERGE: generate base'
         continue-on-error: true
         id: base-app
-        if: >-
-          github.event.pull_request &&
-          !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
+        if: github.event.pull_request
         uses: ./generator-jhipster-cookie-consent/.github/actions/compare-base
         with:
           extra-args: '--skip-jhipster-dependencies ${{ matrix.extra-args }}'
@@ -172,10 +162,6 @@ jobs:
       #----------------------------------------------------------------------
       # Launch tests
       #----------------------------------------------------------------------
-      -   name: 'PREPARE: npm install'
-          if: steps.compare.outputs.equals != 'true'
-          run: ${{ (matrix.workspaces == 'true' && 'npm') || './npmw' }} install
-          timeout-minutes: 7
       - name: 'TESTS: Start docker-compose containers for e2e and backend tests'
         if: steps.compare.outputs.equals != 'true' && matrix.testcontainers == 0
         run: npm run ci:e2e:prepare
@@ -185,26 +171,22 @@ jobs:
         run: echo "skipping npm run ci:backend:test"
         continue-on-error: ${{matrix.continue-on-backend-tests-error || false}}
       - name: 'TESTS: frontend'
-        if: steps.compare.outputs.equals != 'true' && matrix.skip-frontend-tests != 1 && needs.build-matrix.outputs.client != 'false'
+        if: steps.compare.outputs.equals != 'true' && needs.build-matrix.outputs.client != 'false'
         run: |
             echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - START  🩹🩹🩹"
             npm i --save-dev @angular-devkit/build-angular@^13.2.5
             echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - FINISH 🩹🩹🩹"
             npm run ci:frontend:test
-        timeout-minutes: 15
       - name: 'TESTS: packaging'
         if: steps.compare.outputs.equals != 'true'
         run: npm run ci:e2e:package
-        timeout-minutes: 7
-      - name: 'TESTS: Start docker compose containers for e2e tests'
+      - name: 'TESTS: Start docker-compose containers for e2e tests'
         if: steps.compare.outputs.equals != 'true' && matrix.testcontainers != 0
         run: npm run ci:e2e:prepare
-        timeout-minutes: 5
       - name: 'E2E: Run'
         id: e2e
         if: steps.compare.outputs.equals != 'true'
         run: npm run ci:e2e:run --if-present
-        timeout-minutes: 15
       - name: 'E2E: Teardown'
         if: always() && matrix.e2e == 1 && steps.compare.outputs.equals != 'true'
         run: npm run ci:e2e:teardown
@@ -213,13 +195,13 @@ jobs:
         if: always() && steps.backend.outcome == 'failure'
         with:
           name: log-${{ matrix.app-sample }}
-          path: ${{ steps.setup.outputs.application-path }}/**/test-results/**/*.xml
+          path: ${{ steps.setup.outputs.application-path }}/*/test-results/**/*.xml
       - name: 'E2E: Store failure screenshots'
         uses: actions/upload-artifact@v3
         if: always() && steps.e2e.outcome == 'failure'
         with:
           name: screenshots-${{ matrix.app-sample }}
-          path: ${{ steps.setup.outputs.application-path }}/**/cypress/screenshots
+          path: ${{ steps.setup.outputs.application-path }}/*/cypress/screenshots
       - name: Dump docker logs on failure
         if: failure()
         uses: jwalton/gh-docker-logs@v2
