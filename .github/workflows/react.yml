@@ -1,4 +1,4 @@
-name: Angular
+name: React
 concurrency:
   # Group PRs by head_ref, push to main branch by commit id, and others branch by ref.
   group: ${{ github.workflow }}-${{ github.head_ref || (github.ref == 'refs/heads/main' && github.sha) || github.ref }}
@@ -10,7 +10,7 @@ on:
       - 'skip_ci*'
     paths-ignore:
       - 'package*.json'
-      - 'generators/*client/templates/react/**'
+      - 'generators/*client/templates/angular/**'
       - 'generators/*client/templates/vue/**'
   pull_request:
     types: [closed, opened, synchronize, reopened]
@@ -18,7 +18,7 @@ on:
       - '*'
     paths-ignore:
       - 'package*.json'
-      - 'generators/*client/templates/react/**'
+      - 'generators/*client/templates/angular/**'
       - 'generators/*client/templates/vue/**'
 jobs:
   build-matrix:
@@ -28,6 +28,9 @@ jobs:
       client: ${{ steps.build.outputs.client }}
       server: ${{ steps.build.outputs.server }}
       any: ${{ steps.build.outputs.any }}
+#      workflow-angular: ${{ steps.build.outputs.workflow-angular }}
+#      workflow-react: ${{ steps.build.outputs.workflow-react }}
+#      workflow-vue: ${{ steps.build.outputs.workflow-vue }}
     steps:
       - name: 'SETUP: Checkout generator-jhipster-cookie-consent'
         uses: actions/checkout@v3
@@ -36,17 +39,20 @@ jobs:
       - name: 'Build matrix'
         id: build
         uses: ./.github/actions/build-matrix
+        with:
+          workflow-samples-file: react
   applications:
-    name: ${{ matrix.app-sample }}
+    name: ${{ matrix.name }}
+#    runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
     runs-on: ${{ matrix.os }}
     needs: build-matrix
     defaults:
       run:
         working-directory: ${{ github.workspace }}/app
     if: >-
-      !contains(github.event.head_commit.message, '[react]') &&
+      !contains(github.event.head_commit.message, '[angular]') &&
       !contains(github.event.head_commit.message, '[vue]') &&
-      !contains(github.event.pull_request.title, '[react]') &&
+      !contains(github.event.pull_request.title, '[angular]') &&
       !contains(github.event.pull_request.title, '[vue]') &&
       !contains(github.event.head_commit.message, '[ci skip]') &&
       !contains(github.event.head_commit.message, '[skip ci]') &&
@@ -54,22 +60,12 @@ jobs:
       !contains(github.event.pull_request.title, '[ci skip]') &&
       !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci') &&
       github.event.action != 'closed' &&
-      needs.build-matrix.outputs.any != 'false'
+      needs.build-matrix.outputs.workflow-react == 'true'
     timeout-minutes: 40
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-20.04]
-        cache: [angular]
-        app-sample:
-          - ngx-gradle-fr
-        include:
-          - app-sample: ngx-gradle-fr
-            entity: sql
-            environment: prod
-            war: 0
-            e2e: 1
-            testcontainers: 0
+      # Matrix available at https://github.com/jhipster/generator-jhipster/tree/main/test-integration/workflow-samples/
+      matrix: ${{fromJson(needs.build-matrix.outputs.matrix)}}
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
@@ -84,10 +80,10 @@ jobs:
         uses: ./generator-jhipster-cookie-consent/.github/actions/setup
         with:
           application-sample: ${{ matrix.jhi-app-sample || matrix.app-sample }}
-          entities-sample: ${{ matrix.entity }}
-          jdl-entities-sample: ${{ matrix.jdl-entity }}
+          entities-sample: ${{ matrix.entity || 'none' }}
+          jdl-entities-sample: ${{ matrix.jdl-entity || '' }}
           jdl-sample: ${{ matrix.jdl-samples || '' }}
-          application-environment: ${{ matrix.environment }}
+          application-environment: ${{ matrix.environment || 'prod' }}
           application-packaging: ${{ (matrix.war == 1 && 'war') || 'jar' }}
       - uses: actions/setup-node@v3
         with:
@@ -102,9 +98,9 @@ jobs:
           path: |
             ~/.npm
             ~/.cache/Cypress/
-          key: ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.cache }}-${{ hashFiles('generator-jhipster-cookie-consent/package-lock.json', 'generator-jhipster-cookie-consent/**/package.json') }}
+          key: ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.npm-cache || 'react' }}-${{ hashFiles('generator-jhipster-cookie-consent/package-lock.json', 'generator-jhipster-cookie-consent/**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.npm-cache }}-
+            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-${{ matrix.npm-cache || 'react' }}-
             ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-
             ${{ runner.os }}-node-${{ steps.setup.outputs.date }}
       - name: 'SETUP: load maven cache'
@@ -116,7 +112,7 @@ jobs:
             ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-
             ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}
       - name: 'SETUP: load gradle cache'
-        if: contains(matrix.app-sample, 'gradle')
+        if: matrix.workspaces == 'true' || matrix.gradle == 1 || contains(matrix.name, 'gradle')
         uses: actions/cache@v3
         with:
           path: |
@@ -172,10 +168,10 @@ jobs:
       #----------------------------------------------------------------------
       # Launch tests
       #----------------------------------------------------------------------
-      -   name: 'PREPARE: npm install'
-          if: steps.compare.outputs.equals != 'true'
-          run: ${{ (matrix.workspaces == 'true' && 'npm') || './npmw' }} install
-          timeout-minutes: 7
+      - name: 'PREPARE: npm install'
+        if: steps.compare.outputs.equals != 'true'
+        run: ${{ (matrix.workspaces == 'true' && 'npm') || './npmw' }} install
+        timeout-minutes: 7
       - name: 'TESTS: Start docker-compose containers for e2e and backend tests'
         if: steps.compare.outputs.equals != 'true' && matrix.testcontainers == 0
         run: npm run ci:e2e:prepare
@@ -186,11 +182,7 @@ jobs:
         continue-on-error: ${{matrix.continue-on-backend-tests-error || false}}
       - name: 'TESTS: frontend'
         if: steps.compare.outputs.equals != 'true' && matrix.skip-frontend-tests != 1 && needs.build-matrix.outputs.client != 'false'
-        run: |
-            echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - START  🩹🩹🩹"
-            npm i --save-dev @angular-devkit/build-angular@^13.2.5
-            echo "🩹🩹🩹 Applying temporary fix for failing frontend tests - FINISH 🩹🩹🩹"
-            npm run ci:frontend:test
+        run: npm run ci:frontend:test
         timeout-minutes: 15
       - name: 'TESTS: packaging'
         if: steps.compare.outputs.equals != 'true'
@@ -212,20 +204,27 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always() && steps.backend.outcome == 'failure'
         with:
-          name: log-${{ matrix.app-sample }}
+          name: log-${{ matrix.name }}
           path: ${{ steps.setup.outputs.application-path }}/**/test-results/**/*.xml
       - name: 'E2E: Store failure screenshots'
         uses: actions/upload-artifact@v3
         if: always() && steps.e2e.outcome == 'failure'
         with:
-          name: screenshots-${{ matrix.app-sample }}
+          name: screenshots-${{ matrix.name }}
           path: ${{ steps.setup.outputs.application-path }}/**/cypress/screenshots
-      - name: Dump docker logs on failure
+      - name: Dump docker logs
         if: failure()
         uses: jwalton/gh-docker-logs@v2
-#      - name: 'ANALYSIS: Sonar analysis'
-#        if: steps.compare.outputs.equals != 'true' && matrix.sonar-analyse != 'false'
-#        run: $JHI_SCRIPTS/25-sonar-analyze.sh
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  check-react:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: [applications]
+    if: always()
+    steps:
+      - run: |
+          echo '${{ toJSON(needs) }}'
+          if [ 'skipped' == '${{ needs.applications.result }}' ] || [ 'success' == '${{ needs.applications.result }}' ] || [ 'closed' == '${{ github.event.action }}' ]; then
+            exit 0
+          fi
+          exit 1
